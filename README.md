@@ -1,8 +1,8 @@
-Disaster Response Pipeline Project
+#Disaster Response Pipeline Project
 
 This project is to build a model for an API that classifies disaster messages.
 
-Instructions of Python scripts and web app:
+###Instructions of Python scripts and web app:
 1. Run the following commands in the project's root directory to set up database and model.
 
     - To run ETL pipeline that cleans data and stores in database
@@ -18,7 +18,7 @@ Instructions of Python scripts and web app:
 
 
 
-Files Explanation:
+###Files Explanation:
 
 - InsertDatabaseName.db   # database to save clean data to
 
