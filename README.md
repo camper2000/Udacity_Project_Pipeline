@@ -1,6 +1,6 @@
 Disaster Response Pipeline Project
 
-This project is to build a model for an API that classifies disaster messages.
+This project is to build a model for an API that classifies disaster messages. It can quickly recognize the type of disaster and contribute to instructing the relevant rescue.
 
 Instructions of Python scripts and web app:
 1. Run the following commands in the project's root directory to set up database and model.
