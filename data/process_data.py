@@ -6,12 +6,14 @@ import sqlite3
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+# read data from csv
     messages =  pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     df = messages.merge(categories)
     return df
 
 def clean_data(df):
+# split category column, convert to numeric, keep only value 0 and 1
     categories = df['categories'].str.split(pat=';', expand=True)
     row = categories.iloc[0,:]
     category_colnames = row.apply(lambda x: x[0:-2])
@@ -22,12 +24,14 @@ def clean_data(df):
     df_tmp = df.drop(['categories'],axis=1)
     df = pd.concat([df_tmp,categories], axis=1)
     df = df.drop_duplicates()
+    df= df[df['related']!=2]
     return df
 
 
 def save_data(df, database_filename):
+# save data to DB
     engine = create_engine(database_filename)
-    df.to_sql('InsertTableName', con=engine, index=False)
+    df.to_sql('Disaster_Data', con=engine, if_exists='replace', index=False)
 
 
 def main():
