@@ -26,8 +26,8 @@ def tokenize(text):
     return clean_tokens
 
 # load data
-engine = create_engine('sqlite:///InsertDatabaseName.db')
-df = pd.read_sql_table('InsertTableName', engine)
+engine = create_engine('sqlite:///data/Disaster.db')
+df = pd.read_sql_table('Disaster_Data', engine)
 
 # load model
 model = joblib.load("models/pickle_model.pkl")
@@ -39,7 +39,6 @@ model = joblib.load("models/pickle_model.pkl")
 def index():
     
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
     df1 = df.drop(['id','message','original','genre','related'],axis=1)
     cate_counts = df1.sum(axis=0)
     cate_names = df1.columns
@@ -49,18 +48,17 @@ def index():
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
+        # bar chart
         {
             'data': [
                 Bar(
                     x=cate_names,
                     y=cate_counts
-                    ##x=genre_names,
-                    ##y=genre_counts
                 )
             ],
 
             'layout': {
-                'title': 'Distribution of Message Categories',
+                'title': 'Distribution of Message Categories - Bar',
                 'yaxis': {
                     'title': "Count"
                 },
@@ -68,6 +66,20 @@ def index():
                     ##'title': "Genre"
                     'title': "Category"
                 }
+            }
+        },
+        # pie chart
+        {
+            'data': [
+                {
+                    'type': 'pie',
+                    'labels': cate_names,
+                    'values': cate_counts
+                }
+            ],
+            
+            'layout': {
+                'title': 'Distribution of Message Categories - Pie'
             }
         }
     ]
@@ -78,8 +90,7 @@ def index():
     
     # render web page with plotly graphs
     return render_template('master.html', ids=ids, graphJSON=graphJSON)
-
-
+    
 # web page that handles user query and displays model results
 @app.route('/go')
 def go():
