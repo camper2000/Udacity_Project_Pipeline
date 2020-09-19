@@ -28,13 +28,15 @@ from sklearn.metrics import classification_report
 import pickle
 
 def load_data(database_filepath):
+# read data from DB
     engine = create_engine(database_filepath)
-    df = pd.read_sql_table('InsertTableName', con=engine)
+    df = pd.read_sql_table('Disaster_Data', con=engine)
     X = df.message.values
-    Y = df.iloc[:,5:].values
+    Y = df.iloc[:,4:].values
     return X, Y
 
 def tokenize(text):
+# Tokenize text
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
     clean_tokens = []
@@ -46,6 +48,7 @@ def tokenize(text):
 
 
 def build_model():
+# build pipeline with feature union 
     pipeline = Pipeline([
         ('features', FeatureUnion([
 
@@ -70,7 +73,7 @@ def build_model():
 def evaluate_model(model, X_test, Y_test):
 ## def evaluate_model(model, X_test, Y_test, category_names):
     Y_pred = model.predict(X_test)
-    print(classification_report(np.hstack(Y_test), np.hstack(Y_pred)))
+    print(classification_report(Y_test, Y_pred))
 
 
 def save_model(model, model_filepath):
